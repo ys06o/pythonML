@@ -16,7 +16,7 @@ train_input, test_input, train_target, test_target = train_test_split(student_in
 # [2] 특성 다항 확장 및 경사하강법 필수 스케일링
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import PolynomialFeatures
-poly=PolynomialFeatures(degree=2,include_bias=False)
+poly=PolynomialFeatures(degree=3,include_bias=False)
 poly.fit(train_input)
 
 train_poly=poly.transform(train_input)
@@ -66,12 +66,11 @@ plt.show( )
 
 
 
-sc=SGDClassifier(max_iter=100,random_state=42,alpha=0.0001)
+sc=SGDClassifier(loss='log_loss',max_iter=100,random_state=42,alpha=0.0001)
 sc.fit(train_scaled,train_target)
 
 
 print( sc.score( test_scaled , test_target ) )
-print(sc.score(test_scaled,test_target))
 
 
 # [4] 최고 정확도(Score) 선정 , *0.90 이상 찾기* 
@@ -81,3 +80,13 @@ print(sc.score(test_scaled,test_target))
 # 구현된 모델에 아래 두 가지 샘플 데이터를 입력하여  취업 성공(Placed)과 실패(Not Placed)를 올바르게 분류해내는지 최종 검증하시오.
 #  - 샘플 A : study_hours=9, attendance=95, sleep_hours=7, internet_usage=2, assignments_completed=18, previous_score=85
 #  - 샘플 B : study_hours=2, attendance=60, sleep_hours=5, internet_usage=9, assignments_completed=4, previous_score=50
+
+
+sample=[[9,95,7,2,18,85],[2,60,5,9,4,50]]
+
+
+train_poly=poly.transform(sample)
+
+train_scaled=ss.transform(train_poly)
+print(sc.predict(train_scaled))
+
